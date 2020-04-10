@@ -27,7 +27,8 @@ public class BacklogController {
     public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult bindingResult,
                                                      @PathVariable String backlog_id) {
         ResponseEntity<?> errorMap = validationErrorService.checkForErrors(bindingResult);
-        if(errorMap!=null) return errorMap;
+        if(errorMap != null)
+            return errorMap;
         ProjectTask projectTask1 = projectTaskService.addProjectTask(backlog_id, projectTask);
         return new ResponseEntity<>(projectTask1, HttpStatus.CREATED);
     }
@@ -46,7 +47,9 @@ public class BacklogController {
     public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTask projectTask, @PathVariable String backlog_id,
                                                @PathVariable String pt_id, BindingResult bindingResult) {
         ResponseEntity<?> errorMap = validationErrorService.checkForErrors(bindingResult);
-        if(errorMap!=null) return errorMap;
+        if(errorMap != null)
+            return errorMap;
+
         return new ResponseEntity<>(projectTaskService.updateByProjectSequence(projectTask, backlog_id, pt_id), HttpStatus.OK);
     }
 
