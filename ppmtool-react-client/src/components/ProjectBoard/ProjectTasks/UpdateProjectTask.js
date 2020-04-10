@@ -1,41 +1,127 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { getProjectTask } from "./../../../actions/backlogActions";
+import {
+  getProjectTask,
+  updateProjectTask,
+} from "./../../../actions/backlogActions";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 class UpdateProjectTask extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: "",
+      projectSequence: "",
+      summary: "",
+      acceptanceCriteria: "",
+      status: "",
+      priority: "",
+      dueDate: "",
+      projectIdentifier: "",
+      create_At: "",
+      //   update_at: "",
+      //   errors: {},
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   componentDidMount() {
     const { backlog_id, pt_id } = this.props.match.params;
     this.props.getProjectTask(backlog_id, pt_id, this.props.history);
   }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      id,
+      projectSequence,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      projectIdentifier,
+      create_At,
+    } = nextProps.project_task;
+
+    this.setState({
+      id,
+      projectSequence,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      projectIdentifier,
+      create_At,
+    });
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    const updateProjectTask = {
+      id: this.state.id,
+      projectSequence: this.state.projectSequence,
+      summary: this.state.summary,
+      acceptanceCriteria: this.state.acceptanceCriteria,
+      status: this.state.status,
+      priority: this.state.priority,
+      dueDate: this.state.dueDate,
+      projectIdentifier: this.state.projectIdentifier,
+      create_At: this.state.create_At,
+    };
+    const { backlog_id, pt_id } = this.props.match.params;
+    this.props.updateProjectTask(
+      backlog_id,
+      pt_id,
+      updateProjectTask,
+      this.props.history
+    );
+  }
+
   render() {
     return (
       <div className="add-PBI">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <a href="#" className="btn btn-light">
+              <Link
+                to={`/projectBoard/${this.state.projectIdentifier}`}
+                className="btn btn-light"
+              >
                 Back to Project Board
-              </a>
+              </Link>
               <h4 className="display-4 text-center">
                 Add /Update Project Task
               </h4>
-              <p className="lead text-center">Project Name + Project Code</p>
+              <p className="lead text-center">
+                Project Name: {this.state.projectIdentifier} + Project Task ID:{" "}
+                {this.state.projectSequence}
+              </p>
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
                     className="form-control form-control-lg"
                     name="summary"
+                    value={this.state.summary}
                     placeholder="Project Task summary"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
                   <textarea
                     className="form-control form-control-lg"
                     placeholder="Acceptance Criteria"
+                    value={this.state.acceptanceCriteria}
                     name="acceptanceCriteria"
+                    onChange={this.onChange}
                   ></textarea>
                 </div>
                 <h6>Due Date</h6>
@@ -44,12 +130,16 @@ class UpdateProjectTask extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="dueDate"
+                    value={this.state.dueDate}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
                   <select
                     className="form-control form-control-lg"
                     name="priority"
+                    value={this.state.priority}
+                    onChange={this.onChange}
                   >
                     <option value={0}>Select Priority</option>
                     <option value={1}>High</option>
@@ -62,6 +152,8 @@ class UpdateProjectTask extends Component {
                   <select
                     className="form-control form-control-lg"
                     name="status"
+                    value={this.state.status}
+                    onChange={this.onChange}
                   >
                     <option value="">Select Status</option>
                     <option value="TO_DO">TO DO</option>
@@ -85,11 +177,15 @@ class UpdateProjectTask extends Component {
 
 const mapStateToProps = (state) => ({
   project_task: state.backlog.project_task,
+  errors: state.errors,
 });
 
 UpdateProjectTask.propTypes = {
   getProjectTask: PropTypes.func.isRequired,
   project_task: PropTypes.object.isRequired,
+  updateProjectTask: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, { getProjectTask })(UpdateProjectTask);
+export default connect(mapStateToProps, { getProjectTask, updateProjectTask })(
+  UpdateProjectTask
+);
