@@ -7,24 +7,23 @@ class Backlog extends Component {
     let toDoTasks = [];
     let inProgressTasks = [];
     let doneTasks = [];
-    if (Array.isArray(project_tasks_prop)) {
-      for (let i = 0; i < project_tasks_prop.length; i++) {
-        const project_task = project_tasks_prop[i];
-        if (project_task.status === "TO_DO") {
-          toDoTasks.push(
-            <ProjectTask key={project_task.id} project_task={project_task} />
-          );
-        } else if (project_task.status === "DONE") {
-          doneTasks.push(
-            <ProjectTask key={project_task.id} project_task={project_task} />
-          );
-        } else if (project_task.status === "IN_PROGRESS") {
-          inProgressTasks.push(
-            <ProjectTask key={project_task.id} project_task={project_task} />
-          );
-        }
+    for (let i = 0; i < project_tasks_prop.length; i++) {
+      const project_task = project_tasks_prop[i];
+      if (project_task.status === "TO_DO") {
+        toDoTasks.push(
+          <ProjectTask key={project_task.id} project_task={project_task} />
+        );
+      } else if (project_task.status === "DONE") {
+        doneTasks.push(
+          <ProjectTask key={project_task.id} project_task={project_task} />
+        );
+      } else if (project_task.status === "IN_PROGRESS") {
+        inProgressTasks.push(
+          <ProjectTask key={project_task.id} project_task={project_task} />
+        );
       }
     }
+
     return (
       <div className="container">
         <div className="row">

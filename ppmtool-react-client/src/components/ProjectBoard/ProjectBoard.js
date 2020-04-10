@@ -30,20 +30,20 @@ class ProjectBoard extends Component {
     const { errors } = this.state;
     let BoardContent;
     const boardAlgorithm = (errors, project_tasks) => {
-      if (!Array.isArray(project_tasks)) {
+      if (project_tasks.length < 1) {
         if (errors.projectNotFound) {
           return (
             <div className="alert alert-danger text-center" role="alert">
               {errors.projectNotFound}
             </div>
           );
+        } else {
+          return (
+            <div className="alert alert-info text-center" role="alert">
+              No tasks on this board
+            </div>
+          );
         }
-      } else if (project_tasks.length < 1) {
-        return (
-          <div className="alert alert-info text-center" role="alert">
-            No tasks on this board
-          </div>
-        );
       } else {
         return <Backlog project_tasks_prop={project_tasks} />;
       }
