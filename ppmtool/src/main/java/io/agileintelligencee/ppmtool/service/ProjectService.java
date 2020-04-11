@@ -3,11 +3,14 @@ package io.agileintelligencee.ppmtool.service;
 import io.agileintelligencee.ppmtool.exceptions.ProjectIdException;
 import io.agileintelligencee.ppmtool.model.Backlog;
 import io.agileintelligencee.ppmtool.model.Project;
+import io.agileintelligencee.ppmtool.model.User;
 import io.agileintelligencee.ppmtool.repository.BacklogRepository;
 import io.agileintelligencee.ppmtool.repository.ProjectRepository;
+import io.agileintelligencee.ppmtool.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +23,16 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOrUpdateProject(Project project){
+    @Autowired
+    private UserRepository userRepository;
+
+    public Project saveOrUpdateProject(Project project, String name){
         String projectIdentifier = project.getProjectIdentifier().toUpperCase();
         try {
+            User user = userRepository.findByUsername(name);
+            project.setUser(user);
             project.setProjectIdentifier(projectIdentifier);
+            project.setProjectLeader(user.getUsername());
             if (project.getId() == null) {
                 Backlog backlog = new Backlog();
                 backlog.setProjectIdentifier(projectIdentifier);
