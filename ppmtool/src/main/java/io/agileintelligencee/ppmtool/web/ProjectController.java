@@ -25,7 +25,7 @@ public class ProjectController {
     private ValidationErrorService validationErrorService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal){
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
 
         ResponseEntity<?> errorMap = validationErrorService.checkForErrors(result);
 
@@ -38,20 +38,20 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<?> findProjectById(@PathVariable String projectId){
-        Project project = projectService.findProjectByProjectIdentifier(projectId);
+    public ResponseEntity<?> findProjectById(@PathVariable String projectId, Principal principal)  {
+        Project project = projectService.findProjectByProjectIdentifier(projectId, principal.getName());
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> findAllProjects(){
-        List<Project> projects = projectService.findAllProjects();
+    public ResponseEntity<?> findAllProjects(Principal principal) {
+        List<Project> projects = projectService.findAllProjects(principal.getName());
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<?> deleteProject(@PathVariable String projectId){
-        projectService.deleteProject(projectId);
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId, Principal principal) {
+        projectService.deleteProject(projectId, principal.getName());
         return new ResponseEntity<>("Project with ID : " + projectId + "was deleted!", HttpStatus.OK);
     }
 }

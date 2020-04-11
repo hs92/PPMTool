@@ -1,6 +1,7 @@
 package io.agileintelligencee.ppmtool.service;
 
 import io.agileintelligencee.ppmtool.exceptions.ProjectIdException;
+import io.agileintelligencee.ppmtool.exceptions.ProjectNotFoundException;
 import io.agileintelligencee.ppmtool.model.Backlog;
 import io.agileintelligencee.ppmtool.model.Project;
 import io.agileintelligencee.ppmtool.model.User;
@@ -9,6 +10,7 @@ import io.agileintelligencee.ppmtool.repository.ProjectRepository;
 import io.agileintelligencee.ppmtool.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -50,29 +52,23 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByProjectIdentifier(String projectIdentifier){
+    public Project findProjectByProjectIdentifier(String projectIdentifier, String username){
         Project project = projectRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
-        if(project == null){
+        if (project == null){
             throw new ProjectIdException("Project with id : " + projectIdentifier.toUpperCase() + " doesn't exist.");
+        }
+        if (!username.equals(project.getProjectLeader())) {
+            throw new ProjectNotFoundException("Project not found in your account");
         }
         return project;
     }
 
-    public List<Project> findAllProjects(){
-        Iterable<Project> allProjects = projectRepository.findAll();
-        List<Project> projectList = new ArrayList<>();
-        for(Project project : allProjects){
-            projectList.add(project);
-        }
-        return projectList;
+    public List<Project> findAllProjects(String username) {
+        return projectRepository.findByProjectLeader(username);
     }
 
-    public void deleteProject(String projectId){
-        Project project = projectRepository.findByProjectIdentifier(projectId);
-        if(project == null){
-            throw new ProjectIdException("Project with id : " + projectId.toUpperCase() + " doesn't exist.");
-        }
-        projectRepository.delete(project);
+    public void deleteProject(String projectId, String username) {
+        projectRepository.delete(findProjectByProjectIdentifier(projectId, username));
     }
 
 }
