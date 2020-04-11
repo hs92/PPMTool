@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "f2028ef9-371c-4315-bc66-8e2226458dda",
+		"name": "PPMTool",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get all projects",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/project/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"project",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get project",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/project/PID-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"project",
+						"PID-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete project",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/project/PID-2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"project",
+						"PID-2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add project",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"projectName\": \"Test\",\r\n    \"projectIdentifier\": \"PID-2\",\r\n    \"description\": \"Test\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/project",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"project"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get project task by backlog_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/backlog/PID-2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"backlog",
+						"PID-2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get project task by backlog_id/pt_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/backlog/PID-3/PID-3-3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"backlog",
+						"PID-3",
+						"PID-3-3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add ProjectTask To Backlog",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"summary\": \"DB changes - Add users\",\n    \"acceptanceCriteria\": \"User id to be added as admin users : 1238, 1265\",\n    \"status\": \"TO_DO\",\n    \"priority\": 2\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/backlog/PID-2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"backlog",
+						"PID-2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update ProjectTask",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"projectSequence\": \"PID-2-1\",\n        \"id\": 16,\n    \"projectIdentifier\": \"PID-2\",\n        \"summary\": \"DB changes - Add users update\",\n        \"acceptanceCriteria\": \"User id to be added as admin users : 1238, 1265\",\n        \"status\": \"TO_DO\",\n        \"priority\": 2,\n        \"create_At\": \"2020-04-11T06:43:18.000+0000\"\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/backlog/PID-2/PID-2-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"backlog",
+						"PID-2",
+						"PID-2-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete project task",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/backlog/PID-2/PID-2-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"backlog",
+						"PID-2",
+						"PID-2-1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
