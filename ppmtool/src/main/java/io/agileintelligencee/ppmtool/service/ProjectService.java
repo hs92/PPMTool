@@ -10,10 +10,6 @@ import io.agileintelligencee.ppmtool.repository.ProjectRepository;
 import io.agileintelligencee.ppmtool.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +26,16 @@ public class ProjectService {
 
     public Project saveOrUpdateProject(Project project, String name){
         String projectIdentifier = project.getProjectIdentifier().toUpperCase();
+
+        if(project.getId() != null) {
+            Project existingProject = projectRepository.findByProjectIdentifier(projectIdentifier);
+            if(existingProject != null && !existingProject.getProjectLeader().equals(name)) {
+                throw new ProjectNotFoundException("Project not found in your account.");
+            } else if (existingProject == null) {
+                throw new ProjectNotFoundException("Project with ID: " + projectIdentifier + " doesn't exist.");
+            }
+        }
+
         try {
             User user = userRepository.findByUsername(name);
             project.setUser(user);
