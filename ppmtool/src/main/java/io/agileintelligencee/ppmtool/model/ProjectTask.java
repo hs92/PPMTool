@@ -1,5 +1,6 @@
 package io.agileintelligencee.ppmtool.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -25,10 +26,13 @@ public class ProjectTask {
 
     private Integer priority;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date dueDate;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date create_At;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date update_At;
 
     @ManyToOne(fetch = FetchType.EAGER)
